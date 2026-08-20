@@ -1,4 +1,5 @@
 from singleton.llm import LLMContainer
+from .constants import LLM_DEFAULT_NAME
 import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
@@ -6,16 +7,15 @@ from langchain.chat_models import init_chat_model
 # Load variables from .env file into os.environ
 load_dotenv()
 
-
-
+def setup_llm():
+    LLMContainer().register(LLM_DEFAULT_NAME, init_chat_model(
+        "google_genai:gemini-3.5-flash"
+    ))
 
 def setup():
-    # LLMContainer().register("llm", init_chat_model("google_genai:gemini-3.7-flash"))
-    print('hei')
-    model = init_chat_model(
-        "google_genai:gemini-3.5-flash"
-    )
+    # LLMContainer().register(LLM_DEFAULT_NAME, init_chat_model("google_genai:gemini-3.7-flash"))
 
-    response = model.invoke("Why do parrots talk?")
+    setup_llm()
+    response = LLMContainer().get(LLM_DEFAULT_NAME).invoke("Why do parrots talk?")
 
     print(response.content)    

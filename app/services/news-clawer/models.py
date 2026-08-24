@@ -10,8 +10,10 @@ from sqlalchemy import (
     Integer,
     Numeric,
     String,
+    BigInteger,
     Text,
     UniqueConstraint,
+    Float
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -35,8 +37,6 @@ class Stock(Base):
         back_populates="stock",
         cascade="all, delete-orphan",
     )
-
-
 class StockSummary(Base):
     __tablename__ = "stock_summaries"
 
@@ -48,27 +48,20 @@ class StockSummary(Base):
         ),
     )
 
-    # Source/API ID.
-    # Not the primary key because stock_code + date identifies
-    # the actual daily record.
     id_stock_summary: Mapped[int] = mapped_column(
         Integer,
-        nullable=False,
     )
 
     no: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
     )
-    id_stock_summary: Mapped[int] = mapped_column(
-        Integer,
-        primary_key=True,
-    )
 
     stock_code: Mapped[str] = mapped_column(
         String(20),
         ForeignKey("stocks.stock_code"),
         nullable=False,
+        primary_key=True,
         index=True,
     )
 
@@ -118,17 +111,17 @@ class StockSummary(Base):
     )
 
     volume: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     value: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     frequency: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
@@ -143,7 +136,7 @@ class StockSummary(Base):
     )
 
     offer_volume: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
@@ -153,32 +146,32 @@ class StockSummary(Base):
     )
 
     bid_volume: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     listed_shares: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     tradeable_shares: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
-    weight_for_index: Mapped[Decimal] = mapped_column(
-        Numeric(18, 6),
+    weight_for_index: Mapped[int] = mapped_column(
+        BigInteger,
         nullable=False,
     )
 
     foreign_sell: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     foreign_buy: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
@@ -188,18 +181,28 @@ class StockSummary(Base):
     )
 
     non_regular_volume: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     non_regular_value: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
     )
 
     non_regular_frequency: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         nullable=False,
+    )
+
+    persen: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    percentage: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
     )
 
     stock: Mapped["Stock"] = relationship(

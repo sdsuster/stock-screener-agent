@@ -1,6 +1,10 @@
 import constants    
 import httpx
-from supabase import Client
+from schemas import StockSummary as StockSummarySchema
+from pydantic import TypeAdapter
+from repositories import    StockSummaryRepostiory
+from database import get_db
+
 
 def fetch_tickers():
     params = {
@@ -18,7 +22,12 @@ def fetch_tickers():
 
         return response.json()
 
-def run(supabase: Client):
-    fetch_tickers()
+def run():
+    res = fetch_tickers()
+    data = TypeAdapter(list[StockSummarySchema]).validate_python(res['data'])
+    with get_db() as db:
+        repo = StockSummaryRepostiory(db)
+        repo.update(data)
+        repo.update_ticker(data)
 
-run(None)
+    

@@ -1,11 +1,17 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
+
+class Stock(BaseModel):
+    stock_code: str = Field(alias="StockCode")
+    stock_name: str = Field(alias="StockName")
+
 
 
 class StockSummary(BaseModel):
     model_config = ConfigDict(
-        populate_by_name=True
+        populate_by_name=True,
+        extra="ignore"
     )
 
     no: int = Field(alias="No")
@@ -44,7 +50,7 @@ class StockSummary(BaseModel):
     foreign_sell: int = Field(alias="ForeignSell")
     foreign_buy: int = Field(alias="ForeignBuy")
 
-    delisting_date: str = Field(alias="DelistingDate")
+    delisting_date: datetime | None = Field(alias="DelistingDate")
 
     non_regular_volume: int = Field(alias="NonRegularVolume")
     non_regular_value: int = Field(alias="NonRegularValue")
@@ -52,3 +58,11 @@ class StockSummary(BaseModel):
 
     persen: float | None = None
     percentage: float | None = None
+
+
+    @field_validator("delisting_date", mode="before")
+    @classmethod
+    def empty_date_to_none(cls, value):
+        if value == "":
+            return None
+        return value

@@ -1,54 +1,207 @@
-from datetime import datetime
+from __future__ import annotations
 
-from pydantic import BaseModel, Field, ConfigDict
+from datetime import date, datetime
+from decimal import Decimal
+
+from sqlalchemy import (
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Text,
+    UniqueConstraint,
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from database import Base
 
 
-class StockSummary(BaseModel):
-    model_config = ConfigDict(
-        populate_by_name=True
+class Stock(Base):
+    __tablename__ = "stocks"
+
+    stock_code: Mapped[str] = mapped_column(
+        String(20),
+        primary_key=True,
     )
 
-    no: int = Field(alias="No")
-    id_stock_summary: int = Field(alias="IDStockSummary")
-    date: datetime = Field(alias="Date")
+    stock_name: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
 
-    stock_code: str = Field(alias="StockCode")
-    stock_name: str = Field(alias="StockName")
-    remarks: str = Field(alias="Remarks")
+    summaries: Mapped[list["StockSummary"]] = relationship(
+        back_populates="stock",
+        cascade="all, delete-orphan",
+    )
 
-    previous: int = Field(alias="Previous")
-    open_price: int = Field(alias="OpenPrice")
-    first_trade: int = Field(alias="FirstTrade")
 
-    high: int = Field(alias="High")
-    low: int = Field(alias="Low")
-    close: int = Field(alias="Close")
-    change: int = Field(alias="Change")
+class StockSummary(Base):
+    __tablename__ = "stock_summaries"
 
-    volume: int = Field(alias="Volume")
-    value: int = Field(alias="Value")
-    frequency: int = Field(alias="Frequency")
+    __table_args__ = (
+        UniqueConstraint(
+            "stock_code",
+            "date",
+            name="uq_stock_summary_stock_code_date",
+        ),
+    )
 
-    index_individual: float = Field(alias="IndexIndividual")
+    # Source/API ID.
+    # Not the primary key because stock_code + date identifies
+    # the actual daily record.
+    id_stock_summary: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
 
-    offer: int = Field(alias="Offer")
-    offer_volume: int = Field(alias="OfferVolume")
+    no: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+    id_stock_summary: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+    )
 
-    bid: int = Field(alias="Bid")
-    bid_volume: int = Field(alias="BidVolume")
+    stock_code: Mapped[str] = mapped_column(
+        String(20),
+        ForeignKey("stocks.stock_code"),
+        nullable=False,
+        index=True,
+    )
 
-    listed_shares: int = Field(alias="ListedShares")
-    tradeable_shares: int = Field(alias="TradebleShares")
-    weight_for_index: int = Field(alias="WeightForIndex")
+    date: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+    )
 
-    foreign_sell: int = Field(alias="ForeignSell")
-    foreign_buy: int = Field(alias="ForeignBuy")
+    remarks: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
 
-    delisting_date: str = Field(alias="DelistingDate")
+    previous: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
 
-    non_regular_volume: int = Field(alias="NonRegularVolume")
-    non_regular_value: int = Field(alias="NonRegularValue")
-    non_regular_frequency: int = Field(alias="NonRegularFrequency")
+    open_price: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
 
-    persen: float | None = None
-    percentage: float | None = None
+    first_trade: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    high: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    low: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    close: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    change: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    volume: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    value: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    frequency: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    index_individual: Mapped[Decimal] = mapped_column(
+        Numeric(18, 6),
+        nullable=False,
+    )
+
+    offer: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    offer_volume: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    bid: Mapped[Decimal] = mapped_column(
+        Numeric(18, 4),
+        nullable=False,
+    )
+
+    bid_volume: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    listed_shares: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    tradeable_shares: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    weight_for_index: Mapped[Decimal] = mapped_column(
+        Numeric(18, 6),
+        nullable=False,
+    )
+
+    foreign_sell: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    foreign_buy: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    delisting_date: Mapped[date | None] = mapped_column(
+        Date,
+        nullable=True,
+    )
+
+    non_regular_volume: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    non_regular_value: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    non_regular_frequency: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    stock: Mapped["Stock"] = relationship(
+        back_populates="summaries",
+    )

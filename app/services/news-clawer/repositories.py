@@ -1,8 +1,8 @@
-from supabase import Client
+# from supabase import Client
 
-class StockSummaryRepostiory:
-    def __init__(self, supabase):
-        self.supabase = supabase
+# class StockSummaryRepostiory:
+#     def __init__(self, supabase):
+#         self.supabase = supabase
 
-    def save():
+#     def save():
         

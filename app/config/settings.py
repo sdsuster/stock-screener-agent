@@ -13,5 +13,4 @@ def setup_llm():
     ))
 
 def setup():
-    # LLMContainer().register(LLM_DEFAULT_NAME, init_chat_model("google_genai:gemini-3.7-flash"))
     setup_llm()

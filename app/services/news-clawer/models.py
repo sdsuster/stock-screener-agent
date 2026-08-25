@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from decimal import Decimal
-
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Date,
     DateTime,
@@ -13,12 +13,48 @@ from sqlalchemy import (
     BigInteger,
     Text,
     UniqueConstraint,
-    Float
+    Float,
+    func
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
+class NewsChunk(Base):
+    __tablename__ = "news_chunks"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    news_id: Mapped[int] = mapped_column(
+        ForeignKey("news.id"),
+        index=True
+    )
+
+    embedding_type: Mapped[str]  # "title" / "content"
+    chunk_index: Mapped[int]
+    content: Mapped[str] = mapped_column(Text)
+
+    embedding: Mapped[list[float]] = mapped_column(
+        Vector(1024)
+    )
+
+class News(Base):
+    __tablename__ = "news"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    title: Mapped[str] =  mapped_column(
+        Text,
+        nullable=False,
+    )
+    content: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+    url: Mapped[str] = mapped_column(String(2048), unique=True)
+
+    published_at: Mapped[datetime | None]
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
 class Stock(Base):
     __tablename__ = "stocks"

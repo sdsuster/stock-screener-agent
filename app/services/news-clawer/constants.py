@@ -16,3 +16,22 @@ HEADERS = {
 ENDPOINTS = {
     IDX_TICKERS: "https://www.idx.co.id/primary/TradingSummary/GetStockSummary"
 }
+
+
+RSS_QUERIES = [
+    "saham Indonesia",
+    "emiten Indonesia",
+    "BEI IDX IHSG",
+    "laporan keuangan emiten",
+    "aksi korporasi",
+    "dividen saham",
+    "rights issue OR private placement",
+    "merger OR akuisisi",
+    "IPO OR delisting",
+    "kontrak OR proyek OR ekspansi",
+    "RUPS OR RUPSLB",
+    "buyback OR stock split",
+    "obligasi OR utang OR restrukturisasi",
+    "laba OR pendapatan OR kinerja",
+    "sektor-specific news",
+]

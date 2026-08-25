@@ -1,4 +1,3 @@
-from supabase import Client
 from models import StockSummary, Stock
 from schemas import StockSummary as StockSummarySchema
 from sqlalchemy.orm import Session

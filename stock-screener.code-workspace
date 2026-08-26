@@ -1,0 +1,107 @@
+{
+  "folders": [
+    {
+      "name": "Backend (Go)",
+      "path": "backend"
+    },
+    {
+      "name": "App (Python)",
+      "path": "app"
+    }
+  ],
+  "settings": {
+    "go.useLanguageServer": true,
+    "go.lintTool": "golangci-lint",
+    "go.formatTool": "goimports",
+    "go.testFlags": ["-v"],
+    "[go]": {
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "black",
+    "[python]": {
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/node_modules": true,
+      "**/.encore": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "golang.go",
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "encoredev.encore",
+      "ms-vscode.makefile-tools",
+      "streetsidesoftware.code-spell-checker"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run Encore Services",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/backend",
+        "runtimeExecutable": "encore",
+        "runtimeArgs": ["run"]
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Backend Services",
+        "type": "shell",
+        "command": "cd backend && make dev",
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Start Database",
+        "type": "shell",
+        "command": "cd backend && make db-up",
+        "problemMatcher": []
+      },
+      {
+        "label": "Stop Database",
+        "type": "shell",
+        "command": "cd backend && make db-down",
+        "problemMatcher": []
+      },
+      {
+        "label": "Generate Ent Code",
+        "type": "shell",
+        "command": "cd backend && make generate",
+        "problemMatcher": []
+      },
+      {
+        "label": "Run Tests",
+        "type": "shell",
+        "command": "cd backend && make test",
+        "problemMatcher": [],
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      }
+    ]
+  }
+}

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from decimal import Decimal
+from enum import Enum
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Date,
@@ -14,11 +15,20 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     Float,
-    func
+    func,
+    Enum as SQLEnum
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
+
+
+class EmbeddingStatus(str, Enum):
+    PENDING = "pending"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
 
 class NewsChunk(Base):
     __tablename__ = "news_chunks"
@@ -33,7 +43,11 @@ class NewsChunk(Base):
     embedding_type: Mapped[str]  # "title" / "content"
     chunk_index: Mapped[int]
     content: Mapped[str] = mapped_column(Text)
-
+    status: Mapped[EmbeddingStatus] = mapped_column(
+        SQLEnum(EmbeddingStatus),
+        default=EmbeddingStatus.PENDING,
+        nullable=False,
+    )
     embedding: Mapped[list[float]] = mapped_column(
         Vector(1024)
     )

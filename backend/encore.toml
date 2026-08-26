@@ -1,0 +1,10 @@
+# Database configuration for Encore services
+# Encore will automatically create and manage these databases
+
+# Market Data Database
+[[sqldb]]
+name = "marketdata"
+
+# News Database
+[[sqldb]]
+name = "news"

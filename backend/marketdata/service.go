@@ -1,10 +1,11 @@
 package marketdata
 
 import (
-	"context"
-
 	"encore.dev/storage/sqldb"
 )
+
+// Database instance for marketdata service
+var db = sqldb.NewDatabase("marketdata", sqldb.DatabaseConfig{})
 
 // Service struct holds our dependencies
 type Service struct {
@@ -14,7 +15,7 @@ type Service struct {
 // Initialize the service
 func initService() (*Service, error) {
 	return &Service{
-		db: sqldb.Named("marketdata"),
+		db: db,
 	}, nil
 }
 

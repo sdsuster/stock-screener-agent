@@ -3,7 +3,7 @@ module encore.app
 go 1.22
 
 require (
-	encore.dev v1.36.0
+	encore.dev v1.40.2
 	entgo.io/ent v0.13.1
 	github.com/lib/pq v1.10.9
 	github.com/pgvector/pgvector-go v0.1.1

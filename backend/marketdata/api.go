@@ -8,10 +8,10 @@ import (
 
 // GetStock retrieves a single stock by code
 //
-//encore:api public method=GET path=/marketdata/stocks/:stock_code
+//encore:api public method=GET path=/marketdata/stock
 func GetStock(ctx context.Context, params *GetStockParams) (*GetStockResponse, error) {
 	rlog.Info("Getting stock", "stock_code", params.StockCode)
-	
+
 	// TODO: Implement with Ent
 	return &GetStockResponse{
 		Stock: &Stock{
@@ -26,7 +26,7 @@ func GetStock(ctx context.Context, params *GetStockParams) (*GetStockResponse, e
 //encore:api public method=GET path=/marketdata/stocks
 func ListStocks(ctx context.Context) (*ListStocksResponse, error) {
 	rlog.Info("Listing all stocks")
-	
+
 	// TODO: Implement with Ent
 	return &ListStocksResponse{
 		Stocks: []Stock{},
@@ -39,7 +39,7 @@ func ListStocks(ctx context.Context) (*ListStocksResponse, error) {
 //encore:api public method=POST path=/marketdata/stocks
 func CreateStock(ctx context.Context, params *CreateStockParams) (*GetStockResponse, error) {
 	rlog.Info("Creating/updating stock", "stock_code", params.StockCode)
-	
+
 	// TODO: Implement with Ent
 	return &GetStockResponse{
 		Stock: &Stock{
@@ -54,7 +54,7 @@ func CreateStock(ctx context.Context, params *CreateStockParams) (*GetStockRespo
 //encore:api public method=POST path=/marketdata/summaries
 func GetStockSummaries(ctx context.Context, params *GetStockSummaryParams) (*GetStockSummaryResponse, error) {
 	rlog.Info("Getting stock summaries", "stock_code", params.StockCode)
-	
+
 	// TODO: Implement with Ent
 	return &GetStockSummaryResponse{
 		Summaries: []StockSummary{},

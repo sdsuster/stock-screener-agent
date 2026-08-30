@@ -50,7 +50,7 @@ type CreateNewsResponse struct {
 
 // GetNewsParams represents parameters for getting news
 type GetNewsParams struct {
-	ID int64 `json:"id"`
+	ID int64 `qs:"id" json:"id"`
 }
 
 // GetNewsResponse represents the response for getting news
@@ -86,14 +86,14 @@ type SearchNewsResponse struct {
 
 // SearchResult represents a single search result
 type SearchResult struct {
-	News       *News   `json:"news"`
+	News       *News      `json:"news"`
 	Chunk      *NewsChunk `json:"chunk,omitempty"`
-	Similarity float64 `json:"similarity"`
+	Similarity float64    `json:"similarity"`
 }
 
 // GetNewsChunksParams represents parameters for getting news chunks
 type GetNewsChunksParams struct {
-	NewsID int64  `json:"news_id"`
+	NewsID int64            `qs:"news_id" json:"news_id"`
 	Status *EmbeddingStatus `json:"status,omitempty"`
 }
 

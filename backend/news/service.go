@@ -1,10 +1,11 @@
 package news
 
 import (
-	"context"
-
 	"encore.dev/storage/sqldb"
 )
+
+// Database instance for news service
+var db = sqldb.NewDatabase("news", sqldb.DatabaseConfig{})
 
 // Service struct holds our dependencies
 type Service struct {
@@ -14,7 +15,7 @@ type Service struct {
 // Initialize the service
 func initService() (*Service, error) {
 	return &Service{
-		db: sqldb.Named("news"),
+		db: db,
 	}, nil
 }
 

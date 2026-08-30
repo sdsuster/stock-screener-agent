@@ -11,7 +11,7 @@ import (
 //encore:api public method=POST path=/news
 func CreateNews(ctx context.Context, params *CreateNewsParams) (*CreateNewsResponse, error) {
 	rlog.Info("Creating news", "title", params.Title)
-	
+
 	// TODO: Implement with Ent
 	return &CreateNewsResponse{
 		News: &News{
@@ -25,10 +25,10 @@ func CreateNews(ctx context.Context, params *CreateNewsParams) (*CreateNewsRespo
 
 // GetNews retrieves a single news article by ID
 //
-//encore:api public method=GET path=/news/:id
+//encore:api public method=GET path=/news/article
 func GetNews(ctx context.Context, params *GetNewsParams) (*GetNewsResponse, error) {
 	rlog.Info("Getting news", "id", params.ID)
-	
+
 	// TODO: Implement with Ent
 	return &GetNewsResponse{
 		News: &News{
@@ -45,7 +45,7 @@ func GetNews(ctx context.Context, params *GetNewsParams) (*GetNewsResponse, erro
 //encore:api public method=POST path=/news/list
 func ListNews(ctx context.Context, params *ListNewsParams) (*ListNewsResponse, error) {
 	rlog.Info("Listing news", "limit", params.Limit, "offset", params.Offset)
-	
+
 	// TODO: Implement with Ent
 	return &ListNewsResponse{
 		News:  []News{},
@@ -58,7 +58,7 @@ func ListNews(ctx context.Context, params *ListNewsParams) (*ListNewsResponse, e
 //encore:api public method=POST path=/news/search
 func SearchNews(ctx context.Context, params *SearchNewsParams) (*SearchNewsResponse, error) {
 	rlog.Info("Searching news", "query", params.Query)
-	
+
 	// TODO: Implement with Ent and pgvector
 	return &SearchNewsResponse{
 		Results: []SearchResult{},
@@ -68,10 +68,10 @@ func SearchNews(ctx context.Context, params *SearchNewsParams) (*SearchNewsRespo
 
 // GetNewsChunks retrieves chunks for a news article
 //
-//encore:api public method=GET path=/news/:news_id/chunks
+//encore:api public method=POST path=/news/chunks
 func GetNewsChunks(ctx context.Context, params *GetNewsChunksParams) (*GetNewsChunksResponse, error) {
 	rlog.Info("Getting news chunks", "news_id", params.NewsID)
-	
+
 	// TODO: Implement with Ent
 	return &GetNewsChunksResponse{
 		Chunks: []NewsChunk{},

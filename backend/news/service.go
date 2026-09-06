@@ -5,7 +5,9 @@ import (
 )
 
 // Database instance for news service
-var db = sqldb.NewDatabase("news", sqldb.DatabaseConfig{})
+var db = sqldb.NewDatabase("news", sqldb.DatabaseConfig{
+	Migrations: "./migrations",
+})
 
 // Service struct holds our dependencies
 type Service struct {
